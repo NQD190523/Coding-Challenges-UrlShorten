@@ -1,0 +1,16 @@
+# Commit Message Template
+# -----------------------
+# Common types: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert
+#
+# Format:
+# type(scope?): short description
+#
+# Examples:
+# feat(service): add feature to shorten URLs
+# fix(controller): resolve URL redirection issue
+# docs(readme): update project documentation
+#
+# -----------------------
+# Please remove lines starting with # before committing.
+
+type(scope?): commit message here
