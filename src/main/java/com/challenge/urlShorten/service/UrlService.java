@@ -24,6 +24,7 @@ public class UrlService {
         }
     }
 
+    // get original url from redis
     public String getOriginalUrl(String shortUrl) {
         try {
             String  originalUrl = redisService.get(shortUrl);
