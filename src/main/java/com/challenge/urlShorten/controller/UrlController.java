@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.challenge.urlShorten.service.UrlService;
@@ -25,7 +26,8 @@ public class UrlController {
     private UrlService urlService;
 
     @PostMapping("/shorten")
-    public ResponseEntity<Map<String,String>>  generateShortUrl( @RequestBody Map<String,String>  request) {
+    public ResponseEntity<Map<String,String>>  generateShortUrl( @RequestParam Map<String,String>  request) {
+        System.out.println(request.get("url"));
         String shortUrl = urlService.generateShortUrl(request.get("url"));
         ResponseEntity<Map<String,String>> response = ResponseEntity.ok(Map.of("shortUrl", DOMAIN+  shortUrl));
         return response;

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <h1 class= "text-center mt-5">Url Shorten !</h1>
+    <p class="text-center m-2">This is my first project in the coding challenges where i learned to become a better software developer every day.</p>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form id="urlForm">
+                    <div class="form-group">
+                        <label for="url" class="m-2">Enter your URL</label>
+                        <input  type="text" class="form-control m-2" id="url" name="url" placeholder="Enter your URL">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Shorten</button>
+                </form>
+                <div class="mt-3">
+                    <h3>Shorten URL</h3>
+                    <a href="#" id="shortenUrl"></a>
+                    <p id="shortenedUrl"></p>
+                    <button type="button" class="btn btn-primary" id="copyButton">Copy</button>
+                    <button type="button" class="btn btn-primary" id="redirectButton">Redirect</button>
+                    <button type="button" class="btn btn-primary" id="deleteButton">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Toast container -->
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">URL Shortener</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    URL has been copied to clipboard!
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <footer class="text-center align-items-end py-3 mt-auto">
+        <p>Created by <a href="
+            https://github.com/NQD190523/Coding-Challenges-UrlShorten">DucDuc</a>
+        </p>
+    </footer> 
+</body>
+<script>
+    // Lắng nghe sự kiện submit của form
+    document.getElementById('urlForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Ngăn không làm mới trang
+
+        var url = document.getElementById('url').value;  // Lấy giá trị URL từ input
+        console.log(url);
+
+        // Gửi yêu cầu AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/url/shorten", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                var shortenedUrl = response.shortUrl;
+                document.getElementById('shortenedUrl').innerText = shortenedUrl;
+            } else {
+                alert("Error: " + xhr.status);
+            }
+        };
+
+        // Gửi dữ liệu URL đến controller
+        xhr.send("url=" + encodeURIComponent(url));
+    });
+    // Thêm sự kiện click vào nút "Copy"
+    document.getElementById("copyButton").addEventListener("click", function() {
+        var copyText = document.getElementById("shortenedUrl").innerText; // Lấy URL ngắn
+        if (copyText) {
+            // Tạo một textarea tạm thời để sao chép
+            var textarea = document.createElement("textarea");
+            textarea.value = copyText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            // Hiển thị Toast thay vì alert
+            var toast = new bootstrap.Toast(document.getElementById('toast'));
+            toast.show();
+        } else {
+            alert("No URL to copy!");
+        }
+    });
+</script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+</html>
